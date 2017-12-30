@@ -8,12 +8,7 @@ import com.lss233.phoenix.command.PhoenixCommand;
 import com.lss233.phoenix.logging.Logger;
 import org.spongepowered.api.Game;
 import org.spongepowered.api.Server;
-import org.spongepowered.api.command.CommandException;
-import org.spongepowered.api.command.CommandResult;
-import org.spongepowered.api.command.CommandSource;
-import org.spongepowered.api.command.args.CommandContext;
 import org.spongepowered.api.command.args.GenericArguments;
-import org.spongepowered.api.command.spec.CommandExecutor;
 import org.spongepowered.api.command.spec.CommandSpec;
 import org.spongepowered.api.config.ConfigDir;
 import org.spongepowered.api.event.Listener;
@@ -32,7 +27,7 @@ import java.util.Optional;
 /**
  *
  */
-@Plugin(id = "PhoenixSponge", name = "Phoenix Sponge Plugin", version = "1.0")
+@Plugin(id = "phoenixsponge", name = "Phoenix Sponge Plugin", version = "1.0")
 public class SpongeMain {
     @Inject
     @ConfigDir(sharedRoot = false)

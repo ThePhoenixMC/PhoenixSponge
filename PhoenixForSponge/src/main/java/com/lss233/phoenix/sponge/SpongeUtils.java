@@ -3,10 +3,11 @@ package com.lss233.phoenix.sponge;
 import com.lss233.phoenix.command.CommandSender;
 import com.lss233.phoenix.module.Module;
 import org.spongepowered.api.command.CommandSource;
+import org.spongepowered.api.entity.Entity;
+import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.world.Location;
 import org.spongepowered.api.world.World;
-import org.spongepowered.api.entity.living.player.Player;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.util.ArrayList;
@@ -56,6 +57,7 @@ public class SpongeUtils {
         };
         return PWorld;
     }
+
     public static com.lss233.phoenix.Player toPhoenix(Player player) {
         com.lss233.phoenix.Player PPlayer;
         PPlayer = new com.lss233.phoenix.Player() {
@@ -81,7 +83,7 @@ public class SpongeUtils {
 
             @Override
             public void sendMessage(String[] message) {
-                for (String msg:message) {
+                for (String msg : message) {
                     this.sendMessage(msg);
                 }
             }
@@ -100,6 +102,12 @@ public class SpongeUtils {
         PLocation = new com.lss233.phoenix.Location(toPhoenix(location.getExtent()), location.getX(), location.getY(), location.getZ());
         return PLocation;
 
+    }
+
+    public static com.lss233.phoenix.entity.Entity toPhoenix(Entity entity) {
+        com.lss233.phoenix.entity.Entity PEntity;
+        PEntity = () -> toPhoenix(entity.getLocation());
+        return PEntity;
     }
 
     public static CommandSender toPhoenix(CommandSource src) {

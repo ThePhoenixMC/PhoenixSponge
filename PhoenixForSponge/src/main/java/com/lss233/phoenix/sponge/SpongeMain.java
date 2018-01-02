@@ -6,7 +6,8 @@ import com.lss233.phoenix.World;
 import com.lss233.phoenix.command.Command;
 import com.lss233.phoenix.command.PhoenixCommand;
 import com.lss233.phoenix.logging.Logger;
-import com.lss233.phoenix.sponge.listener.PlayerListener;
+import com.lss233.phoenix.sponge.listener.EntityListener;
+import com.lss233.phoenix.sponge.listener.NetworkListener;
 import org.spongepowered.api.Game;
 import org.spongepowered.api.Server;
 import org.spongepowered.api.Sponge;
@@ -47,7 +48,8 @@ public class SpongeMain {
         initSpongeide();
     }
     private void initSpongeide() {
-        Sponge.getEventManager().registerListeners(this,new PlayerListener());
+        Sponge.getEventManager().registerListeners(this,new NetworkListener());
+        Sponge.getEventManager().registerListeners(this,new EntityListener());
     }
     private class SpongeServer implements Phoenix.Server{
         private Server server = game.getServer();

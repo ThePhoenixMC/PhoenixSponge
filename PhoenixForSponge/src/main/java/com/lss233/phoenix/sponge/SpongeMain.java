@@ -6,8 +6,10 @@ import com.lss233.phoenix.World;
 import com.lss233.phoenix.command.Command;
 import com.lss233.phoenix.command.PhoenixCommand;
 import com.lss233.phoenix.logging.Logger;
+import com.lss233.phoenix.sponge.listener.PlayerListener;
 import org.spongepowered.api.Game;
 import org.spongepowered.api.Server;
+import org.spongepowered.api.Sponge;
 import org.spongepowered.api.command.args.GenericArguments;
 import org.spongepowered.api.command.spec.CommandSpec;
 import org.spongepowered.api.config.ConfigDir;
@@ -45,7 +47,7 @@ public class SpongeMain {
         initSpongeide();
     }
     private void initSpongeide() {
-
+        Sponge.getEventManager().registerListeners(this,new PlayerListener());
     }
     private class SpongeServer implements Phoenix.Server{
         private Server server = game.getServer();

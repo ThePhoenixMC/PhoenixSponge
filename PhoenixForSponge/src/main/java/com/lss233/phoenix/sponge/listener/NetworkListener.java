@@ -6,6 +6,7 @@ import com.lss233.phoenix.sponge.SpongeUtils;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.event.Listener;
 import org.spongepowered.api.event.network.ClientConnectionEvent;
+import org.spongepowered.api.network.RemoteConnection;
 
 import java.util.Optional;
 
@@ -43,5 +44,13 @@ public class NetworkListener {
         Phoenix.getEventManager().fire((com.lss233.phoenix.event.network.ClientConnectionEvent.Login) () -> cause);
     }
 
+    @Listener
+    public void onPlayerAuth(ClientConnectionEvent.Auth event) {
+        RemoteConnection conn = event.getConnection();
+        Cause cause = Cause.builder()
+                .add("connection", conn)
+                .build();
+        Phoenix.getEventManager().fire((com.lss233.phoenix.event.network.ClientConnectionEvent.Auth) () -> cause);
+    }
 
 }

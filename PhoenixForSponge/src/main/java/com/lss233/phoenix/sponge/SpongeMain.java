@@ -1,25 +1,28 @@
 package com.lss233.phoenix.sponge;
 
+import com.google.inject.Inject;
 import com.lss233.phoenix.Phoenix;
 import com.lss233.phoenix.Player;
 import com.lss233.phoenix.World;
 import com.lss233.phoenix.command.Command;
 import com.lss233.phoenix.command.PhoenixCommand;
-import com.lss233.phoenix.logging.Logger;
 import com.lss233.phoenix.sponge.listener.EntityListener;
 import com.lss233.phoenix.sponge.listener.NetworkListener;
+import ninja.leaping.configurate.commented.CommentedConfigurationNode;
+import ninja.leaping.configurate.loader.ConfigurationLoader;
+import org.slf4j.Logger;
 import org.spongepowered.api.Game;
 import org.spongepowered.api.Server;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.command.args.GenericArguments;
 import org.spongepowered.api.command.spec.CommandSpec;
 import org.spongepowered.api.config.ConfigDir;
+import org.spongepowered.api.config.DefaultConfig;
 import org.spongepowered.api.event.Listener;
 import org.spongepowered.api.event.game.state.GameStartedServerEvent;
 import org.spongepowered.api.plugin.Plugin;
 import org.spongepowered.api.text.Text;
 
-import javax.inject.Inject;
 import java.io.File;
 import java.net.InetSocketAddress;
 import java.nio.file.Path;
@@ -30,8 +33,12 @@ import java.util.Optional;
 /**
  *
  */
-@Plugin(id = "phoenixsponge", name = "Phoenix Sponge Plugin", version = "1.0")
+@Plugin(id = "phoenixsponge", name = "Phoenix For Sponge", version = "1.0", description = "Phoenix Framework for Sponge.")
 public class SpongeMain {
+    @Inject
+    @DefaultConfig(sharedRoot = true)
+    private ConfigurationLoader<CommentedConfigurationNode> configManager;
+
     @Inject
     @ConfigDir(sharedRoot = false)
     private Path dataFolder;
@@ -39,8 +46,13 @@ public class SpongeMain {
     private Game game;
     @Inject
     private Logger logger;
-    @Inject
-    private Plugin plugin;
+
+    private SpongeMain instance;
+
+    SpongeMain(){
+        this.instance = this;
+    }
+
     @Listener
     public void onServerStart(GameStartedServerEvent event) {
         SpongeServer server = new SpongeServer();
@@ -116,8 +128,8 @@ public class SpongeMain {
             return dataFolder.toFile();
         }
 
-        public Logger getLogger() {
-            return new Logger() {
+        public com.lss233.phoenix.logging.Logger getLogger() {
+            return new com.lss233.phoenix.logging.Logger() {
                 @Override
                 public void info(String msg) {
                     logger.info(msg);
@@ -170,7 +182,7 @@ public class SpongeMain {
                                 Phoenix.getCommandManager().handleCommand(SpongeUtils.toPhoenix(src), b_label, args.getAll("args").stream().toArray(String[]::new));
                                 return null;
                             });
-                    game.getCommandManager().register(plugin, commandSpecBuilder.build(), "helloworld", "hello", "test");
+                    game.getCommandManager().register(instance, commandSpecBuilder.build(), "helloworld", "hello", "test");
                 }
 
                 @Override

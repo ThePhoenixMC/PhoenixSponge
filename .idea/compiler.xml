@@ -13,7 +13,7 @@
     <bytecodeTargetLevel>
       <module name="Phoenix-API" target="1.8" />
       <module name="PhoenixForSponge" target="1.8" />
-      <module name="PhoenixSponge" target="1.5" />
+      <module name="PhoenixSponge" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>

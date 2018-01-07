@@ -1,6 +1,8 @@
 package com.lss233.phoenix.sponge;
 
 import com.lss233.phoenix.command.CommandSender;
+import com.lss233.phoenix.entity.EntityTypes;
+import com.lss233.phoenix.entity.Vehicle;
 import com.lss233.phoenix.module.Module;
 import org.spongepowered.api.command.CommandSource;
 import org.spongepowered.api.entity.Entity;
@@ -10,26 +12,23 @@ import org.spongepowered.api.world.Location;
 import org.spongepowered.api.world.World;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
 
 /**
  *
  */
 public class SpongeUtils {
-    public static com.lss233.phoenix.World toPhoenix(World world) {
-        com.lss233.phoenix.World PWorld;
-        PWorld = new com.lss233.phoenix.World() {
+    public static com.lss233.phoenix.world.World toPhoenix(World world) {
+        com.lss233.phoenix.world.World PWorld;
+        PWorld = new com.lss233.phoenix.world.World() {
             @Override
             public String getName() {
                 return world.getName();
             }
 
             @Override
-            public List<com.lss233.phoenix.Player> getPlayers() {
-                List<com.lss233.phoenix.Player> players = new ArrayList<>();
+            public List<com.lss233.phoenix.entity.living.Player> getPlayers() {
+                List<com.lss233.phoenix.entity.living.Player> players = new ArrayList<>();
                 for (Player player : world.getPlayers())
                     players.add(toPhoenix(player));
 
@@ -43,8 +42,8 @@ public class SpongeUtils {
 
             @Override
             public boolean equals(Object object) {
-                if (object instanceof com.lss233.phoenix.Player) {
-                    com.lss233.phoenix.World that = (com.lss233.phoenix.World) object;
+                if (object instanceof com.lss233.phoenix.entity.living.Player) {
+                    com.lss233.phoenix.world.World that = (com.lss233.phoenix.world.World) object;
                     return Objects.equals(this.getUUID(), that.getUUID());
                 }
                 return false;
@@ -58,9 +57,9 @@ public class SpongeUtils {
         return PWorld;
     }
 
-    public static com.lss233.phoenix.Player toPhoenix(Player player) {
-        com.lss233.phoenix.Player PPlayer;
-        PPlayer = new com.lss233.phoenix.Player() {
+    public static com.lss233.phoenix.entity.living.Player toPhoenix(Player player) {
+        com.lss233.phoenix.entity.living.Player PPlayer;
+        PPlayer = new com.lss233.phoenix.entity.living.Player() {
             @Override
             public String getName() {
                 return player.getName();
@@ -89,7 +88,7 @@ public class SpongeUtils {
             }
 
             @Override
-            public com.lss233.phoenix.Location getLocation() {
+            public com.lss233.phoenix.world.Location getLocation() {
                 return toPhoenix(player.getLocation());
             }
         };
@@ -97,16 +96,91 @@ public class SpongeUtils {
 
     }
 
-    private static com.lss233.phoenix.Location toPhoenix(Location<World> location) {
-        com.lss233.phoenix.Location PLocation;
-        PLocation = new com.lss233.phoenix.Location(toPhoenix(location.getExtent()), location.getX(), location.getY(), location.getZ());
+    private static com.lss233.phoenix.world.Location toPhoenix(Location<World> location) {
+        com.lss233.phoenix.world.Location PLocation;
+        PLocation = new com.lss233.phoenix.world.Location(toPhoenix(location.getExtent()), location.getX(), location.getY(), location.getZ());
         return PLocation;
 
     }
 
     public static com.lss233.phoenix.entity.Entity toPhoenix(Entity entity) {
         com.lss233.phoenix.entity.Entity PEntity;
-        PEntity = () -> toPhoenix(entity.getLocation());
+        PEntity = new com.lss233.phoenix.entity.Entity() {
+            @Override
+            public EntityTypes getType() {
+                return null;
+            }
+
+            @Override
+            public boolean hasPassenger(com.lss233.phoenix.entity.Entity entity) {
+                return false;
+            }
+
+            @Override
+            public List<com.lss233.phoenix.entity.Entity> getPassengers() {
+                return null;
+            }
+
+            @Override
+            public boolean addPassenger(com.lss233.phoenix.entity.Entity entity) {
+                return false;
+            }
+
+            @Override
+            public void clearPassengers() {
+
+            }
+
+            @Override
+            public void removePassenger(com.lss233.phoenix.entity.Entity entity) {
+
+            }
+
+            @Override
+            public Optional<Vehicle> getVehicle() {
+                return Optional.empty();
+            }
+
+            @Override
+            public boolean setVehicle(com.lss233.phoenix.entity.Entity entity) {
+                return false;
+            }
+
+            @Override
+            public com.lss233.phoenix.entity.Entity getBaseVehicle() {
+                return null;
+            }
+
+            @Override
+            public Vector getVelocity() {
+                return null;
+            }
+
+            @Override
+            public boolean gravity() {
+                return false;
+            }
+
+            @Override
+            public boolean teleport(com.lss233.phoenix.world.Location location) {
+                return false;
+            }
+
+            @Override
+            public boolean teleport(com.lss233.phoenix.entity.Entity entity) {
+                return false;
+            }
+
+            @Override
+            public com.lss233.phoenix.world.Location getLocation() {
+                return null;
+            }
+
+            @Override
+            public com.lss233.phoenix.world.World getWorld() {
+                return null;
+            }
+        };
         return PEntity;
     }
 

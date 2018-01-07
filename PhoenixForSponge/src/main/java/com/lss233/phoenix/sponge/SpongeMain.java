@@ -2,12 +2,12 @@ package com.lss233.phoenix.sponge;
 
 import com.google.inject.Inject;
 import com.lss233.phoenix.Phoenix;
-import com.lss233.phoenix.Player;
-import com.lss233.phoenix.World;
 import com.lss233.phoenix.command.Command;
 import com.lss233.phoenix.command.PhoenixCommand;
+import com.lss233.phoenix.entity.living.Player;
 import com.lss233.phoenix.sponge.listener.EntityListener;
 import com.lss233.phoenix.sponge.listener.NetworkListener;
+import com.lss233.phoenix.world.World;
 import ninja.leaping.configurate.commented.CommentedConfigurationNode;
 import ninja.leaping.configurate.loader.ConfigurationLoader;
 import org.slf4j.Logger;

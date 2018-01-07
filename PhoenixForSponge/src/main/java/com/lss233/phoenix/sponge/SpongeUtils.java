@@ -2,7 +2,6 @@ package com.lss233.phoenix.sponge;
 
 import com.lss233.phoenix.command.CommandSender;
 import com.lss233.phoenix.entity.EntityTypes;
-import com.lss233.phoenix.entity.Vehicle;
 import com.lss233.phoenix.module.Module;
 import org.spongepowered.api.command.CommandSource;
 import org.spongepowered.api.entity.Entity;
@@ -96,7 +95,7 @@ public class SpongeUtils {
             }
 
             @Override
-            public Optional<Vehicle> getVehicle() {
+            public Optional<com.lss233.phoenix.entity.Entity> getVehicle() {
                 return Optional.empty();
             }
 
@@ -239,7 +238,7 @@ public class SpongeUtils {
             }
 
             @Override
-            public Optional<Vehicle> getVehicle() {
+            public Optional<com.lss233.phoenix.entity.Entity> getVehicle() {
                 return Optional.empty();
             }
 

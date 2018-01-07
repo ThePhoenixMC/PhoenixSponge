@@ -4,7 +4,9 @@ import com.lss233.phoenix.Phoenix;
 import com.lss233.phoenix.event.cause.Cause;
 import com.lss233.phoenix.event.cause.entity.DamageModifier;
 import com.lss233.phoenix.event.player.PlayerExpChangeEvent;
+import com.lss233.phoenix.sponge.PhoenixUtils;
 import com.lss233.phoenix.sponge.SpongeUtils;
+import com.lss233.phoenix.world.Location;
 import org.spongepowered.api.entity.Entity;
 import org.spongepowered.api.entity.EntityTypes;
 import org.spongepowered.api.entity.living.player.Player;
@@ -28,6 +30,10 @@ public class EntityListener {
                 .build();
         Phoenix.getEventManager().fire(new com.lss233.phoenix.event.entity.MoveEntityEvent() {
             @Override
+            public void setTo(Location location) {
+            }
+
+            @Override
             public boolean isCancelled() {
                 return event.isCancelled();
             }
@@ -48,7 +54,7 @@ public class EntityListener {
     public void onChangeEntityExperience(ChangeEntityExperienceEvent event){
         Entity entity = event.getTargetEntity();
         if (entity.getType() == EntityTypes.PLAYER){
-            com.lss233.phoenix.Player pPlayer = SpongeUtils.toPhoenix((Player) entity);
+            com.lss233.phoenix.entity.living.Player pPlayer = SpongeUtils.toPhoenix((Player) entity);
             Cause cause = Cause.builder()
                     .add("player",pPlayer)
                     .build();

@@ -34,7 +34,7 @@ public class NetworkListener {
     @Listener
     public void onPlayerLogin(ClientConnectionEvent.Login event) {
         Optional<Player> playerOptional = event.getTargetUser().getPlayer();
-        com.lss233.phoenix.Player phoenixPlayer = null;
+        com.lss233.phoenix.entity.living.Player phoenixPlayer = null;
         if (playerOptional.isPresent()) {
             phoenixPlayer = SpongeUtils.toPhoenix(playerOptional.get());
         }

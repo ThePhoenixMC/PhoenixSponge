@@ -49,17 +49,14 @@ public class SpongeMain {
 
     private SpongeMain instance;
 
-    SpongeMain(){
-        this.instance = this;
-    }
-
     @Listener
     public void onServerStart(GameStartedServerEvent event) {
+        instance = this;
         SpongeServer server = new SpongeServer();
         Phoenix.setServer(server);
-        initSpongeide();
+        initSpongeSide();
     }
-    private void initSpongeide() {
+    private void initSpongeSide() {
         Sponge.getEventManager().registerListeners(this,new NetworkListener());
         Sponge.getEventManager().registerListeners(this,new EntityListener());
     }
@@ -153,7 +150,7 @@ public class SpongeMain {
                 public void loadModules() {
                     File moduleDir = new File(dataFolder.toFile(), "modules");
                     if (!moduleDir.exists()) {
-                        moduleDir.mkdir();
+                        moduleDir.mkdirs();
                         return;
                     }
 

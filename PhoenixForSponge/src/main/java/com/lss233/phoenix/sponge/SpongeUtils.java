@@ -67,27 +67,32 @@ public class SpongeUtils {
 
             @Override
             public boolean hasPassenger(com.lss233.phoenix.entity.Entity entity) {
-                return false;
+                Entity that = PhoenixUtils.toSponge(entity).get();
+                return player.hasPassenger(that);
             }
 
             @Override
             public List<com.lss233.phoenix.entity.Entity> getPassengers() {
-                return null;
+                List<com.lss233.phoenix.entity.Entity> PList = new ArrayList<>();
+                player.getPassengers().forEach(it -> PList.add(toPhoenix(it)));
+                return PList;
             }
 
             @Override
             public boolean addPassenger(com.lss233.phoenix.entity.Entity entity) {
-                return false;
+                Entity that = PhoenixUtils.toSponge(entity).get();
+                return player.addPassenger(that);
             }
 
             @Override
             public void clearPassengers() {
-
+                player.clearPassengers();
             }
 
             @Override
             public void removePassenger(com.lss233.phoenix.entity.Entity entity) {
-
+                Entity that = PhoenixUtils.toSponge(entity).get();
+                player.removePassenger(that);
             }
 
             @Override
@@ -117,12 +122,14 @@ public class SpongeUtils {
 
             @Override
             public boolean teleport(com.lss233.phoenix.world.Location location) {
-                return false;
+                Location SLocation = PhoenixUtils.toSponge(location);
+                return player.setLocation(SLocation);
             }
 
             @Override
             public boolean teleport(com.lss233.phoenix.entity.Entity entity) {
-                return false;
+                Location SLocation = PhoenixUtils.toSponge(entity.getLocation());
+                return player.setLocation(SLocation);
             }
 
             @Override
@@ -202,28 +209,33 @@ public class SpongeUtils {
             }
 
             @Override
-            public boolean hasPassenger(com.lss233.phoenix.entity.Entity entity) {
-                return false;
+            public boolean hasPassenger(com.lss233.phoenix.entity.Entity that) {
+                Entity SEntity = PhoenixUtils.toSponge(that).get();
+                return entity.hasPassenger(SEntity);
             }
 
             @Override
             public List<com.lss233.phoenix.entity.Entity> getPassengers() {
-                return null;
+                List<com.lss233.phoenix.entity.Entity> PList = new ArrayList<>();
+                entity.getPassengers().forEach(it -> PList.add(toPhoenix(entity)));
+                return PList;
             }
 
             @Override
-            public boolean addPassenger(com.lss233.phoenix.entity.Entity entity) {
-                return false;
+            public boolean addPassenger(com.lss233.phoenix.entity.Entity that) {
+                Entity SEntity = PhoenixUtils.toSponge(that).get();
+                return entity.addPassenger(SEntity);
             }
 
             @Override
             public void clearPassengers() {
-
+                entity.clearPassengers();
             }
 
             @Override
-            public void removePassenger(com.lss233.phoenix.entity.Entity entity) {
-
+            public void removePassenger(com.lss233.phoenix.entity.Entity that) {
+                Entity SEntity = PhoenixUtils.toSponge(that).get();
+                entity.removePassenger(SEntity);
             }
 
             @Override
@@ -253,12 +265,14 @@ public class SpongeUtils {
 
             @Override
             public boolean teleport(com.lss233.phoenix.world.Location location) {
-                return false;
+                Location SLocation = PhoenixUtils.toSponge(location);
+                return entity.setLocation(SLocation);
             }
 
             @Override
-            public boolean teleport(com.lss233.phoenix.entity.Entity entity) {
-                return false;
+            public boolean teleport(com.lss233.phoenix.entity.Entity that) {
+                Location SLocation = PhoenixUtils.toSponge(that.getLocation());
+                return entity.setLocation(SLocation);
             }
 
             @Override

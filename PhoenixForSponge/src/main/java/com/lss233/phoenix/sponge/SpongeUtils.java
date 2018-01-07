@@ -192,6 +192,11 @@ public class SpongeUtils {
         com.lss233.phoenix.entity.Entity PEntity;
         PEntity = new com.lss233.phoenix.entity.Entity() {
             @Override
+            public UUID getUniqueId() {
+                return entity.getUniqueId();
+            }
+
+            @Override
             public EntityTypes getType() {
                 return EntityTypes.valueOf(entity.getType().toString());
             }

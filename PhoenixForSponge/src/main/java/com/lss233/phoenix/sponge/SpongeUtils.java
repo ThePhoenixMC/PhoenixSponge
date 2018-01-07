@@ -36,7 +36,7 @@ public class SpongeUtils {
             }
 
             @Override
-            public UUID getUUID() {
+            public UUID getUniqueId() {
                 return world.getUniqueId();
             }
 
@@ -44,14 +44,14 @@ public class SpongeUtils {
             public boolean equals(Object object) {
                 if (object instanceof com.lss233.phoenix.entity.living.Player) {
                     com.lss233.phoenix.world.World that = (com.lss233.phoenix.world.World) object;
-                    return Objects.equals(this.getUUID(), that.getUUID());
+                    return Objects.equals(this.getUniqueId(), that.getUniqueId());
                 }
                 return false;
             }
 
             @Override
             public int hashCode() {
-                return Objects.hash(this.getName(), this.getUUID());
+                return Objects.hash(this.getName(), this.getUniqueId());
             }
         };
         return PWorld;
@@ -61,54 +61,8 @@ public class SpongeUtils {
         com.lss233.phoenix.entity.living.Player PPlayer;
         PPlayer = new com.lss233.phoenix.entity.living.Player() {
             @Override
-            public String getName() {
-                return player.getName();
-            }
-
-            @Override
-            public UUID getUniqueId() {
-                return player.getUniqueId();
-            }
-
-            @Override
-            public void sendPluginMessage(Module source, String channel, byte[] messaeg) {
-                throw new NotImplementedException();
-            }
-
-            @Override
-            public void sendMessage(String message) {
-                player.sendMessage(Text.of(message));
-            }
-
-            @Override
-            public void sendMessage(String[] message) {
-                for (String msg : message) {
-                    this.sendMessage(msg);
-                }
-            }
-
-            @Override
-            public com.lss233.phoenix.world.Location getLocation() {
-                return toPhoenix(player.getLocation());
-            }
-        };
-        return PPlayer;
-
-    }
-
-    private static com.lss233.phoenix.world.Location toPhoenix(Location<World> location) {
-        com.lss233.phoenix.world.Location PLocation;
-        PLocation = new com.lss233.phoenix.world.Location(toPhoenix(location.getExtent()), location.getX(), location.getY(), location.getZ());
-        return PLocation;
-
-    }
-
-    public static com.lss233.phoenix.entity.Entity toPhoenix(Entity entity) {
-        com.lss233.phoenix.entity.Entity PEntity;
-        PEntity = new com.lss233.phoenix.entity.Entity() {
-            @Override
             public EntityTypes getType() {
-                return null;
+                return EntityTypes.valueOf(player.getType().toString());
             }
 
             @Override
@@ -158,7 +112,138 @@ public class SpongeUtils {
 
             @Override
             public boolean gravity() {
+                return player.gravity().get();
+            }
+
+            @Override
+            public boolean teleport(com.lss233.phoenix.world.Location location) {
                 return false;
+            }
+
+            @Override
+            public boolean teleport(com.lss233.phoenix.entity.Entity entity) {
+                return false;
+            }
+
+            @Override
+            public double getHealth() {
+                return player.getHealthData().health().get();
+            }
+
+            @Override
+            public void setHealth(double health) {
+                player.getHealthData().health().set(health);
+            }
+
+            @Override
+            public double getMaxHealth() {
+                return player.getHealthData().maxHealth().get();
+            }
+
+            @Override
+            public String getName() {
+                return player.getName();
+            }
+
+            @Override
+            public UUID getUniqueId() {
+                return player.getUniqueId();
+            }
+
+            @Override
+            public void sendPluginMessage(Module source, String channel, byte[] messaeg) {
+                throw new NotImplementedException();
+            }
+
+            @Override
+            public void sendMessage(String message) {
+                player.sendMessage(Text.of(message));
+            }
+
+            @Override
+            public void sendMessage(String[] message) {
+                for (String msg : message) {
+                    this.sendMessage(msg);
+                }
+            }
+
+            @Override
+            public com.lss233.phoenix.world.Location getLocation() {
+                return toPhoenix(player.getLocation());
+            }
+
+            @Override
+            public com.lss233.phoenix.world.World getWorld() {
+                return toPhoenix(player.getWorld());
+            }
+        };
+        return PPlayer;
+
+    }
+
+    private static com.lss233.phoenix.world.Location toPhoenix(Location<World> location) {
+        com.lss233.phoenix.world.Location PLocation;
+        PLocation = new com.lss233.phoenix.world.Location(toPhoenix(location.getExtent()), location.getX(), location.getY(), location.getZ());
+        return PLocation;
+
+    }
+
+    public static com.lss233.phoenix.entity.Entity toPhoenix(Entity entity) {
+        com.lss233.phoenix.entity.Entity PEntity;
+        PEntity = new com.lss233.phoenix.entity.Entity() {
+            @Override
+            public EntityTypes getType() {
+                return EntityTypes.valueOf(entity.getType().toString());
+            }
+
+            @Override
+            public boolean hasPassenger(com.lss233.phoenix.entity.Entity entity) {
+                return false;
+            }
+
+            @Override
+            public List<com.lss233.phoenix.entity.Entity> getPassengers() {
+                return null;
+            }
+
+            @Override
+            public boolean addPassenger(com.lss233.phoenix.entity.Entity entity) {
+                return false;
+            }
+
+            @Override
+            public void clearPassengers() {
+
+            }
+
+            @Override
+            public void removePassenger(com.lss233.phoenix.entity.Entity entity) {
+
+            }
+
+            @Override
+            public Optional<Vehicle> getVehicle() {
+                return Optional.empty();
+            }
+
+            @Override
+            public boolean setVehicle(com.lss233.phoenix.entity.Entity entity) {
+                return false;
+            }
+
+            @Override
+            public com.lss233.phoenix.entity.Entity getBaseVehicle() {
+                return null;
+            }
+
+            @Override
+            public Vector getVelocity() {
+                return null;
+            }
+
+            @Override
+            public boolean gravity() {
+                return entity.gravity().get();
             }
 
             @Override
@@ -173,12 +258,12 @@ public class SpongeUtils {
 
             @Override
             public com.lss233.phoenix.world.Location getLocation() {
-                return null;
+                return toPhoenix(entity.getLocation());
             }
 
             @Override
             public com.lss233.phoenix.world.World getWorld() {
-                return null;
+                return toPhoenix(entity.getWorld());
             }
         };
         return PEntity;

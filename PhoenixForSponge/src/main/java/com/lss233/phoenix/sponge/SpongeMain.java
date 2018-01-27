@@ -5,6 +5,8 @@ import com.lss233.phoenix.Phoenix;
 import com.lss233.phoenix.command.Command;
 import com.lss233.phoenix.command.PhoenixCommand;
 import com.lss233.phoenix.entity.living.Player;
+import com.lss233.phoenix.event.cause.Cause;
+import com.lss233.phoenix.event.phoenix.PhoenixShutdownEvent;
 import com.lss233.phoenix.sponge.listener.EntityListener;
 import com.lss233.phoenix.sponge.listener.NetworkListener;
 import com.lss233.phoenix.world.World;
@@ -20,6 +22,7 @@ import org.spongepowered.api.config.ConfigDir;
 import org.spongepowered.api.config.DefaultConfig;
 import org.spongepowered.api.event.Listener;
 import org.spongepowered.api.event.game.state.GameStartedServerEvent;
+import org.spongepowered.api.event.game.state.GameStoppedServerEvent;
 import org.spongepowered.api.plugin.Plugin;
 import org.spongepowered.api.text.Text;
 
@@ -56,12 +59,20 @@ public class SpongeMain {
         Phoenix.setServer(server);
         initSpongeSide();
     }
-    private void initSpongeSide() {
-        Sponge.getEventManager().registerListeners(this,new NetworkListener());
-        Sponge.getEventManager().registerListeners(this,new EntityListener());
+
+    @Listener
+    public void onServerStop(GameStoppedServerEvent event) {
+        Phoenix.getEventManager().fire((PhoenixShutdownEvent) () -> Cause.builder().build());
     }
-    private class SpongeServer implements Phoenix.Server{
+
+    private void initSpongeSide() {
+        Sponge.getEventManager().registerListeners(this, new NetworkListener());
+        Sponge.getEventManager().registerListeners(this, new EntityListener());
+    }
+
+    private class SpongeServer implements Phoenix.Server {
         private Server server = game.getServer();
+
         public String getName() {
             return "Sponge";
         }
@@ -102,7 +113,7 @@ public class SpongeMain {
         }
 
         public boolean hasWhitelist() {
-            return  game.isServerAvailable() && server.hasWhitelist();
+            return game.isServerAvailable() && server.hasWhitelist();
         }
 
         public boolean hasGenerateStructures() {
@@ -111,13 +122,13 @@ public class SpongeMain {
 
         public List<World> getWorlds() {
             List<World> list = new ArrayList<>();
-            server.getWorlds().forEach((item)-> list.add(SpongeUtils.toPhoenix(item)));
+            server.getWorlds().forEach((item) -> list.add(SpongeUtils.toPhoenix(item)));
             return list;
         }
 
         public List<Player> getOnlinePlayers() {
             List<Player> list = new ArrayList<>();
-            server.getOnlinePlayers().forEach((item)-> list.add(SpongeUtils.toPhoenix(item)));
+            server.getOnlinePlayers().forEach((item) -> list.add(SpongeUtils.toPhoenix(item)));
             return list;
         }
 

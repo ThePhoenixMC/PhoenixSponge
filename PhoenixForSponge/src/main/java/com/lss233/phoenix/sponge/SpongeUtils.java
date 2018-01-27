@@ -1,14 +1,20 @@
 package com.lss233.phoenix.sponge;
 
+import com.flowpowered.math.vector.Vector3d;
 import com.lss233.phoenix.command.CommandSender;
 import com.lss233.phoenix.entity.EntityTypes;
 import com.lss233.phoenix.module.Module;
+import com.lss233.phoenix.world.Difficulty;
+import com.lss233.phoenix.world.WorldBorder;
+import org.spongepowered.api.Sponge;
 import org.spongepowered.api.command.CommandSource;
 import org.spongepowered.api.entity.Entity;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.world.Location;
 import org.spongepowered.api.world.World;
+import org.spongepowered.api.world.difficulty.Difficulties;
+import org.spongepowered.api.world.storage.WorldProperties;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.util.*;
@@ -40,8 +46,18 @@ public class SpongeUtils {
             }
 
             @Override
+            public com.lss233.phoenix.world.WorldProperties getProperties() {
+                return toPhoenix(world.getProperties());
+            }
+
+            @Override
+            public boolean equals(com.lss233.phoenix.world.World other) {
+                return equals(other);
+            }
+
+            @Override
             public boolean equals(Object object) {
-                if (object instanceof com.lss233.phoenix.entity.living.Player) {
+                if (object instanceof com.lss233.phoenix.world.World) {
                     com.lss233.phoenix.world.World that = (com.lss233.phoenix.world.World) object;
                     return Objects.equals(this.getUniqueId(), that.getUniqueId());
                 }
@@ -144,11 +160,6 @@ public class SpongeUtils {
             @Override
             public double getMaxHealth() {
                 return player.getHealthData().maxHealth().get();
-            }
-
-            @Override
-            public String getName() {
-                return player.getName();
             }
 
             @Override
@@ -285,6 +296,140 @@ public class SpongeUtils {
             }
         };
         return PEntity;
+    }
+
+    public static com.lss233.phoenix.world.WorldProperties toPhoenix(WorldProperties properties){
+        return new com.lss233.phoenix.world.WorldProperties() {
+            @Override
+            public Difficulty getDifficulty() {
+                return Difficulty.valueOf(properties.getDifficulty().getName());
+            }
+
+            @Override
+            public void setDifficulty(Difficulty difficulty) {
+                switch (difficulty){
+                    case EASY:
+                        properties.setDifficulty(Difficulties.EASY);
+                        break;
+                    case HARD:
+                        properties.setDifficulty(Difficulties.HARD);
+                        break;
+                    case NORMAL:
+                        properties.setDifficulty(Difficulties.NORMAL);
+                        break;
+                    case PEACEFUL:
+                        properties.setDifficulty(Difficulties.PEACEFUL);
+                        break;
+                }
+            }
+
+            @Override
+            public boolean isHardcore() {
+                return properties.isHardcore();
+            }
+
+            @Override
+            public void setHardcore(boolean hardcore) {
+                properties.setHardcore(hardcore);
+            }
+
+            @Override
+            public long getSeed() {
+                return properties.getSeed();
+            }
+
+            @Override
+            public void setSeed(long seed) {
+                properties.setSeed(seed);
+            }
+
+            @Override
+            public long getTotalTime() {
+                return properties.getTotalTime();
+            }
+
+            @Override
+            public long getWorldTime() {
+                return properties.getWorldTime();
+            }
+
+            @Override
+            public void setWorldTime(long time) {
+                properties.getWorldTime();
+            }
+
+            @Override
+            public int getThunderDuration() {
+                return properties.getThunderTime();
+            }
+
+            @Override
+            public void setThunderDuration(int thunderDuration) {
+                properties.setThunderTime(thunderDuration);
+            }
+
+            @Override
+            public boolean isThundering() {
+                return properties.isThundering();
+            }
+
+            @Override
+            public void setThundering(boolean thundering) {
+                properties.setThundering(thundering);
+            }
+
+            @Override
+            public int getRainDuration() {
+                return properties.getRainTime();
+            }
+
+            @Override
+            public void setRainDuration(int rainDuration) {
+                properties.setRainTime(rainDuration);
+            }
+
+            @Override
+            public boolean isRaining() {
+                return properties.isRaining();
+            }
+
+            @Override
+            public void setRaining(boolean raining) {
+                properties.setRaining(raining);
+            }
+
+            @Override
+            public String getGameRules(String gameRule) {
+                Optional<String> opGameRule = properties.getGameRule(gameRule);
+                return opGameRule.orElse("");
+            }
+
+            @Override
+            public void setGameRule(String key, String value) {
+                properties.setGameRule(key,value);
+            }
+
+            @Override
+            public com.lss233.phoenix.world.Location getSpawnLocation() {
+                //TODO
+                return null;
+            }
+
+            @Override
+            public void setSpawnLocation(com.lss233.phoenix.world.Location spawnLocation){
+                double x = spawnLocation.getX();
+                double y = spawnLocation.getY();
+                double z = spawnLocation.getZ();
+                Vector3d position = new Vector3d(x,y,z);
+                properties.setSpawnPosition(position.toInt());
+            }
+
+            @Override
+            public WorldBorder getWorldBorderCenter() {
+                //TODO
+                return null;
+            }
+        };
     }
 
     public static CommandSender toPhoenix(CommandSource src) {

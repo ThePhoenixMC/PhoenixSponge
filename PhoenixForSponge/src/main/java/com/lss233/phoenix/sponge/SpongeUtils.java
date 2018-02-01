@@ -76,6 +76,16 @@ public class SpongeUtils {
         com.lss233.phoenix.entity.living.Player PPlayer;
         PPlayer = new com.lss233.phoenix.entity.living.Player() {
             @Override
+            public String getName() {
+                return player.getName();
+            }
+
+            @Override
+            public void kick() {
+                player.kick();
+            }
+
+            @Override
             public EntityTypes getType() {
                 return EntityTypes.valueOf(player.getType().toString());
             }
@@ -399,9 +409,8 @@ public class SpongeUtils {
             }
 
             @Override
-            public String getGameRules(String gameRule) {
-                Optional<String> opGameRule = properties.getGameRule(gameRule);
-                return opGameRule.orElse("");
+            public Optional<String> getGameRules(String gameRule) {
+                return properties.getGameRule(gameRule);
             }
 
             @Override

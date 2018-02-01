@@ -62,7 +62,12 @@ public class SpongeMain {
 
     @Listener
     public void onServerStop(GameStoppedServerEvent event) {
-        Phoenix.getEventManager().fire((PhoenixShutdownEvent) () -> Cause.builder().build());
+        Phoenix.getEventManager().fire(new PhoenixShutdownEvent() {
+            @Override
+            public Cause getCause() {
+                return Cause.builder().add("s","s").build();
+            }
+        });
     }
 
     private void initSpongeSide() {
@@ -190,7 +195,7 @@ public class SpongeMain {
                                 Phoenix.getCommandManager().handleCommand(SpongeUtils.toPhoenix(src), b_label, args.getAll("args").stream().toArray(String[]::new));
                                 return null;
                             });
-                    game.getCommandManager().register(instance, commandSpecBuilder.build(), "helloworld", "hello", "test");
+                    Sponge.getCommandManager().register(SpongeMain.this,commandSpecBuilder.build(),b_label);
                 }
 
                 @Override

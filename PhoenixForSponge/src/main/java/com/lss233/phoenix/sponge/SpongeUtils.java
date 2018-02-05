@@ -6,7 +6,6 @@ import com.lss233.phoenix.entity.EntityTypes;
 import com.lss233.phoenix.module.Module;
 import com.lss233.phoenix.world.Difficulty;
 import com.lss233.phoenix.world.WorldBorder;
-import org.spongepowered.api.Sponge;
 import org.spongepowered.api.command.CommandSource;
 import org.spongepowered.api.entity.Entity;
 import org.spongepowered.api.entity.living.player.Player;
@@ -308,7 +307,7 @@ public class SpongeUtils {
         return PEntity;
     }
 
-    public static com.lss233.phoenix.world.WorldProperties toPhoenix(WorldProperties properties){
+    public static com.lss233.phoenix.world.WorldProperties toPhoenix(WorldProperties properties) {
         return new com.lss233.phoenix.world.WorldProperties() {
             @Override
             public Difficulty getDifficulty() {
@@ -317,7 +316,7 @@ public class SpongeUtils {
 
             @Override
             public void setDifficulty(Difficulty difficulty) {
-                switch (difficulty){
+                switch (difficulty) {
                     case EASY:
                         properties.setDifficulty(Difficulties.EASY);
                         break;
@@ -415,7 +414,7 @@ public class SpongeUtils {
 
             @Override
             public void setGameRule(String key, String value) {
-                properties.setGameRule(key,value);
+                properties.setGameRule(key, value);
             }
 
             @Override
@@ -425,11 +424,11 @@ public class SpongeUtils {
             }
 
             @Override
-            public void setSpawnLocation(com.lss233.phoenix.world.Location spawnLocation){
+            public void setSpawnLocation(com.lss233.phoenix.world.Location spawnLocation) {
                 double x = spawnLocation.getX();
                 double y = spawnLocation.getY();
                 double z = spawnLocation.getZ();
-                Vector3d position = new Vector3d(x,y,z);
+                Vector3d position = new Vector3d(x, y, z);
                 properties.setSpawnPosition(position.toInt());
             }
 
@@ -442,6 +441,17 @@ public class SpongeUtils {
     }
 
     public static CommandSender toPhoenix(CommandSource src) {
-        throw new NotImplementedException();
+        return new CommandSender() {
+
+            @Override
+            public void sendMessage(String message) {
+                src.sendMessage(Text.of(message));
+            }
+
+            @Override
+            public void sendMessage(String[] message) {
+                src.sendMessage(Text.of((Object[]) message));
+            }
+        };
     }
 }

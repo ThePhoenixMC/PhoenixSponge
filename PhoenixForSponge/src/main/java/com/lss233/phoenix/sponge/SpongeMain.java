@@ -16,6 +16,7 @@ import org.slf4j.Logger;
 import org.spongepowered.api.Game;
 import org.spongepowered.api.Server;
 import org.spongepowered.api.Sponge;
+import org.spongepowered.api.command.CommandResult;
 import org.spongepowered.api.command.args.GenericArguments;
 import org.spongepowered.api.command.spec.CommandSpec;
 import org.spongepowered.api.config.ConfigDir;
@@ -190,10 +191,14 @@ public class SpongeMain {
                             .description(Text.of(description))
                             .permission(permission)
                             .arguments(
-                                    GenericArguments.remainingJoinedStrings(Text.of("args")))
+                                    GenericArguments.optional(GenericArguments.remainingJoinedStrings(Text.of("args"))))
                             .executor((src, args) -> {
-                                Phoenix.getCommandManager().handleCommand(SpongeUtils.toPhoenix(src), b_label, args.getAll("args").stream().toArray(String[]::new));
-                                return null;
+                                if (args.hasAny("args")){
+                                    Phoenix.getCommandManager().handleCommand(SpongeUtils.toPhoenix(src), b_label, args.getAll("args").stream().toArray(String[]::new));
+                                }else{
+                                    Phoenix.getCommandManager().handleCommand(SpongeUtils.toPhoenix(src), b_label, new String[]{});
+                                }
+                                return CommandResult.success();
                             });
                     Sponge.getCommandManager().register(SpongeMain.this,commandSpecBuilder.build(),b_label);
                 }

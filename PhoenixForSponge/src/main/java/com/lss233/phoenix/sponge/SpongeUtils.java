@@ -1,14 +1,18 @@
 package com.lss233.phoenix.sponge;
 
 import com.flowpowered.math.vector.Vector3d;
+import com.lss233.phoenix.block.Block;
 import com.lss233.phoenix.command.CommandSender;
 import com.lss233.phoenix.entity.EntityTypes;
 import com.lss233.phoenix.module.Module;
 import com.lss233.phoenix.world.Difficulty;
 import com.lss233.phoenix.world.WorldBorder;
+import org.spongepowered.api.block.BlockSnapshot;
+import org.spongepowered.api.block.BlockState;
 import org.spongepowered.api.command.CommandSource;
 import org.spongepowered.api.entity.Entity;
 import org.spongepowered.api.entity.living.player.Player;
+import org.spongepowered.api.event.cause.Cause;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.world.Location;
 import org.spongepowered.api.world.World;
@@ -47,6 +51,13 @@ public class SpongeUtils {
             @Override
             public com.lss233.phoenix.world.WorldProperties getProperties() {
                 return toPhoenix(world.getProperties());
+            }
+
+            @Override
+            public boolean setBlock(Block block, boolean force) {
+                BlockSnapshot bs = PhoenixUtils.toSponge(block);
+                world.setBlock(bs.getPosition(), bs.getState(), Cause.builder().build());
+                return true;
             }
 
             @Override
@@ -436,6 +447,40 @@ public class SpongeUtils {
             public WorldBorder getWorldBorderCenter() {
                 //TODO
                 return null;
+            }
+        };
+    }
+
+    public static Block toPhoenix(BlockSnapshot block) {
+        return Block.builder().creator(block.getCreator().get()).location(toPhoenix(block.getLocation().get())).state(toPhoenix(block.getState())).build();
+    }
+
+    public static com.lss233.phoenix.block.BlockState toPhoenix(BlockState state) {
+        return new com.lss233.phoenix.block.BlockState() {
+            @Override
+            public int hashCode() {
+                return state.hashCode();
+            }
+
+            @Override
+            public boolean equals(Object obj) {
+                //TODO
+                return false;
+            }
+
+            @Override
+            protected Object clone() throws CloneNotSupportedException {
+                return super.clone();
+            }
+
+            @Override
+            public String toString() {
+                return state.toString();
+            }
+
+            @Override
+            protected void finalize() throws Throwable {
+                super.finalize();
             }
         };
     }

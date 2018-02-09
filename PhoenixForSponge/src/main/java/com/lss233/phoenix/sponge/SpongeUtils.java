@@ -3,16 +3,18 @@ package com.lss233.phoenix.sponge;
 import com.flowpowered.math.vector.Vector3d;
 import com.lss233.phoenix.block.Block;
 import com.lss233.phoenix.command.CommandSender;
-import com.lss233.phoenix.entity.EntityTypes;
+import com.lss233.phoenix.entity.EntityType;
 import com.lss233.phoenix.module.Module;
 import com.lss233.phoenix.world.Difficulty;
 import com.lss233.phoenix.world.WorldBorder;
+import org.spongepowered.api.Sponge;
 import org.spongepowered.api.block.BlockSnapshot;
 import org.spongepowered.api.block.BlockState;
 import org.spongepowered.api.command.CommandSource;
 import org.spongepowered.api.entity.Entity;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.event.cause.Cause;
+import org.spongepowered.api.event.cause.EventContext;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.world.Location;
 import org.spongepowered.api.world.World;
@@ -20,6 +22,7 @@ import org.spongepowered.api.world.difficulty.Difficulties;
 import org.spongepowered.api.world.storage.WorldProperties;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
+import javax.swing.text.html.Option;
 import java.util.*;
 
 /**
@@ -29,6 +32,32 @@ public class SpongeUtils {
     public static com.lss233.phoenix.world.World toPhoenix(World world) {
         com.lss233.phoenix.world.World PWorld;
         PWorld = new com.lss233.phoenix.world.World() {
+            @Override
+            public Optional<com.lss233.phoenix.entity.Entity> createEntity(EntityType entityType, com.lss233.phoenix.math.Vector vector) {
+                Optional<org.spongepowered.api.entity.EntityType> type = Sponge.getRegistry().getAllOf(org.spongepowered.api.entity.EntityType.class).stream().filter(e -> e.getName().equals(entityType.name())).findFirst();
+                return type.map(entityType1 -> toPhoenix(world.createEntity(entityType1, PhoenixUtils.toSponge(vector))));
+            }
+
+            @Override
+            public List<com.lss233.phoenix.entity.Entity> getNearbyEntities(com.lss233.phoenix.math.Vector location, double distance) {
+                List<com.lss233.phoenix.entity.Entity> entities = new ArrayList<>();
+                world.getNearbyEntities(PhoenixUtils.toSponge(location), distance).forEach(e -> entities.add(toPhoenix(e)));
+                return entities;
+            }
+
+            @Override
+            public List<com.lss233.phoenix.entity.Entity> getEntities() {
+                List<com.lss233.phoenix.entity.Entity> entities = new ArrayList<>();
+                world.getEntities().forEach(e-> entities.add(toPhoenix(e)));
+                return entities;
+            }
+
+            @Override
+            public Optional<com.lss233.phoenix.entity.Entity> getEntity(UUID uniqueId) {
+                Optional<Entity> result = world.getEntity(uniqueId);
+                return result.map(SpongeUtils::toPhoenix);
+            }
+
             @Override
             public String getName() {
                 return world.getName();
@@ -56,7 +85,7 @@ public class SpongeUtils {
             @Override
             public boolean setBlock(Block block, boolean force) {
                 BlockSnapshot bs = PhoenixUtils.toSponge(block);
-                world.setBlock(bs.getPosition(), bs.getState(), Cause.builder().build());
+                world.setBlock(bs.getPosition(), bs.getState());
                 return true;
             }
 
@@ -96,8 +125,8 @@ public class SpongeUtils {
             }
 
             @Override
-            public EntityTypes getType() {
-                return EntityTypes.valueOf(player.getType().toString());
+            public EntityType getType() {
+                return EntityType.valueOf(player.getType().toString());
             }
 
             @Override
@@ -234,8 +263,8 @@ public class SpongeUtils {
             }
 
             @Override
-            public EntityTypes getType() {
-                return EntityTypes.valueOf(entity.getType().toString());
+            public EntityType getType() {
+                return EntityType.valueOf(entity.getType().toString());
             }
 
             @Override

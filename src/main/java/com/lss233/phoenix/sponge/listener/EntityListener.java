@@ -4,8 +4,6 @@ import com.lss233.phoenix.Phoenix;
 import com.lss233.phoenix.event.cause.Cause;
 import com.lss233.phoenix.event.cause.entity.DamageModifier;
 import com.lss233.phoenix.event.player.PlayerExpChangeEvent;
-import com.lss233.phoenix.sponge.PhoenixUtils;
-import com.lss233.phoenix.sponge.SpongeUtils;
 import com.lss233.phoenix.world.Location;
 import org.spongepowered.api.entity.Entity;
 import org.spongepowered.api.entity.EntityTypes;
@@ -15,7 +13,7 @@ import org.spongepowered.api.event.entity.ChangeEntityExperienceEvent;
 import org.spongepowered.api.event.entity.DamageEntityEvent;
 import org.spongepowered.api.event.entity.MoveEntityEvent;
 
-import java.util.Optional;
+import static com.lss233.phoenix.sponge.SpongeMain.getTransformer;
 
 /**
  * Listener about Entity
@@ -26,7 +24,7 @@ public class EntityListener {
     public void onMoveEntity(MoveEntityEvent event) {
         Entity entity = event.getTargetEntity();
         Cause cause = Cause.builder()
-                .add("entity", SpongeUtils.toPhoenix(entity))
+                .add("entity", getTransformer().toPhoenix(entity))
                 .build();
         Phoenix.getEventManager().fire(new com.lss233.phoenix.event.entity.MoveEntityEvent() {
             @Override
@@ -54,7 +52,7 @@ public class EntityListener {
     public void onChangeEntityExperience(ChangeEntityExperienceEvent event){
         Entity entity = event.getTargetEntity();
         if (entity.getType() == EntityTypes.PLAYER){
-            com.lss233.phoenix.entity.living.Player pPlayer = SpongeUtils.toPhoenix((Player) entity);
+            com.lss233.phoenix.entity.living.Player pPlayer = getTransformer().toPhoenix((Player) entity);
             Cause cause = Cause.builder()
                     .add("player",pPlayer)
                     .build();
@@ -71,7 +69,7 @@ public class EntityListener {
     public void onDamageEntity(DamageEntityEvent event){
         Entity entity = event.getTargetEntity();
         Cause cause = Cause.builder()
-                .add("entity",SpongeUtils.toPhoenix(entity))
+                .add("entity",getTransformer().toPhoenix(entity))
                 .build();
         Phoenix.getEventManager().fire(new com.lss233.phoenix.event.entity.DamageEntityEvent() {
             @Override

@@ -34,6 +34,7 @@ import org.spongepowered.api.item.inventory.property.InventoryDimension;
 import org.spongepowered.api.item.inventory.property.InventoryTitle;
 import org.spongepowered.api.plugin.Plugin;
 import org.spongepowered.api.text.Text;
+import org.spongepowered.api.text.format.TextColors;
 
 import java.io.File;
 import java.net.InetSocketAddress;
@@ -159,19 +160,29 @@ public class SpongeMain {
         public com.lss233.phoenix.logging.Logger getLogger() {
             return new com.lss233.phoenix.logging.Logger() {
                 @Override
-                public void info(String msg) {
-                    logger.info(msg);
+                public void info(Object msg) {
+                    Sponge.getServer().getConsole().sendMessage(Text.builder(String.valueOf(msg)).color(TextColors.WHITE).build());
                 }
 
                 @Override
-                public void warn(String msg) {
-                    logger.warn(msg);
+                public void warn(Object msg) {
+                    Sponge.getServer().getConsole().sendMessage(Text.builder(String.valueOf(msg)).color(TextColors.GOLD).build());
+
                 }
 
                 @Override
-                public void debug(String msg) {
-                    logger.debug(msg);
+                public void debug(Object msg) {
+                    if (Phoenix.getDebugMode()) {
+                        Sponge.getServer().getConsole().sendMessage(Text.builder(String.valueOf(msg)).color(TextColors.GRAY).build());
+                    }
                 }
+
+                @Override
+                public void severe(Object msg) {
+                    Sponge.getServer().getConsole().sendMessage(Text.builder(String.valueOf(msg)).color(TextColors.DARK_RED).build());
+
+                }
+
             };
         }
 
@@ -207,14 +218,14 @@ public class SpongeMain {
                             .arguments(
                                     GenericArguments.optional(GenericArguments.remainingJoinedStrings(Text.of("args"))))
                             .executor((src, args) -> {
-                                if (args.hasAny("args")){
+                                if (args.hasAny("args")) {
                                     Phoenix.getCommandManager().handleCommand(getTransformer().toPhoenix(src), b_label, args.getAll("args").stream().toArray(String[]::new));
-                                }else{
+                                } else {
                                     Phoenix.getCommandManager().handleCommand(getTransformer().toPhoenix(src), b_label, new String[]{});
                                 }
                                 return CommandResult.success();
                             });
-                    Sponge.getCommandManager().register(SpongeMain.this,commandSpecBuilder.build(),b_label);
+                    Sponge.getCommandManager().register(SpongeMain.this, commandSpecBuilder.build(), b_label);
                 }
 
                 @Override
@@ -225,17 +236,17 @@ public class SpongeMain {
                 @Override
                 public Inventory registerInventory(Inventory.Builder builder) {
                     org.spongepowered.api.item.inventory.Inventory.Builder spongeBuilder = org.spongepowered.api.item.inventory.Inventory.builder();
-                    if(builder.getProperties().containsKey(com.lss233.phoenix.item.inventory.property.InventoryTitle.PROPERTY_NAME)) {
+                    if (builder.getProperties().containsKey(com.lss233.phoenix.item.inventory.property.InventoryTitle.PROPERTY_NAME)) {
                         com.lss233.phoenix.item.inventory.property.InventoryTitle title = (com.lss233.phoenix.item.inventory.property.InventoryTitle) builder.getProperties().get(com.lss233.phoenix.item.inventory.property.InventoryTitle.PROPERTY_NAME);
                         spongeBuilder.property(InventoryTitle.PROPERTY_NAME,
                                 new InventoryTitle(Text.of(title.getText().toString())));
                     }
-                    if(builder.getProperties().containsKey(com.lss233.phoenix.item.inventory.property.InventoryDimension.PROPERTY_NAME)) {
+                    if (builder.getProperties().containsKey(com.lss233.phoenix.item.inventory.property.InventoryDimension.PROPERTY_NAME)) {
                         com.lss233.phoenix.item.inventory.property.InventoryDimension dimension = (com.lss233.phoenix.item.inventory.property.InventoryDimension) builder.getProperties().get(com.lss233.phoenix.item.inventory.property.InventoryDimension.PROPERTY_NAME);
                         spongeBuilder.property(InventoryDimension.PROPERTY_NAME,
                                 new InventoryDimension(dimension.getColumns(), dimension.getRows()));
                     }
-                            spongeBuilder.build(SpongeMain.this);
+                    spongeBuilder.build(SpongeMain.this);
                     return getTransformer().toPhoenix(spongeBuilder.build(SpongeMain.this));
                 }
 

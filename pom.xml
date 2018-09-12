@@ -56,6 +56,10 @@
             <id>sponge</id>
             <url>https://repo.spongepowered.org/maven</url>
         </repository>
+        <repository>
+            <id>lss233-repo</id>
+            <url>https://lss233.com/artifactory/minecraft/</url>
+        </repository>
     </repositories>
 
     <dependencies>

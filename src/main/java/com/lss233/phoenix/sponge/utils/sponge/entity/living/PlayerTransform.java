@@ -16,7 +16,9 @@ import org.spongepowered.api.text.Text;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import javax.annotation.Nullable;
-import java.util.*;
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import static com.lss233.phoenix.sponge.SpongeMain.getTransformer;
@@ -26,7 +28,7 @@ public interface PlayerTransform {
         return new com.lss233.phoenix.entity.living.Player() {
             @Override
             public boolean hasPermission(String s) {
-                return false;
+                return player.hasPermission(s);
             }
 
             @Override
@@ -37,78 +39,14 @@ public interface PlayerTransform {
 
             @Override
             public boolean equip(EquipmentType equipmentType, @Nullable ItemStack itemStack) {
-                //TODO
+                player.equip(getTransformer().toSponge(equipmentType), getTransformer().toSponge(itemStack));
                 return false;
             }
 
             @Override
             public Optional<ItemStack> getEquipped(EquipmentType equipmentType) {
-                return Optional.empty();
-            }
-
-            @Override
-            public Optional<ItemStack> getBoots() {
-                return Optional.empty();
-            }
-
-            @Override
-            public Optional<ItemStack> getChestplate() {
-                return Optional.empty();
-            }
-
-            @Override
-            public Optional<ItemStack> getHelmet() {
-                return Optional.empty();
-            }
-
-            @Override
-            public Optional<ItemStack> getLeggings() {
-                return Optional.empty();
-            }
-
-            @Override
-            public Optional<ItemStack> getItemInMainHand() {
-                return Optional.empty();
-            }
-
-            @Override
-            public Optional<ItemStack> getItemInOffHand() {
-                return Optional.empty();
-            }
-
-            @Override
-            public void setBoots(@Nullable ItemStack itemStack) {
-
-            }
-
-            @Override
-            public void setChestplate(@Nullable ItemStack itemStack) {
-
-            }
-
-            @Override
-            public void setHelmet(@Nullable ItemStack itemStack) {
-
-            }
-
-            @Override
-            public void setLeggings(@Nullable ItemStack itemStack) {
-
-            }
-
-            @Override
-            public void setItemInMainHand(@Nullable ItemStack itemStack) {
-
-            }
-
-            @Override
-            public void setItemInOffHand(@Nullable ItemStack itemStack) {
-
-            }
-
-            @Override
-            public void clearEquipments() {
-
+                Optional<org.spongepowered.api.item.inventory.ItemStack> op = player.getEquipped(getTransformer().toSponge(equipmentType));
+                return op.map(itemStack -> getTransformer().toPhoenix(itemStack));
             }
 
             @Override
@@ -133,7 +71,7 @@ public interface PlayerTransform {
 
             @Override
             public boolean closeInventory() {
-                return false;
+                return player.closeInventory();
             }
 
             @Override
@@ -173,7 +111,12 @@ public interface PlayerTransform {
 
             @Override
             public boolean setVehicle(com.lss233.phoenix.entity.Entity entity) {
-                return false;
+                Optional<org.spongepowered.api.entity.Entity> op = getTransformer().toSponge(entity);
+                if (!op.isPresent()) {
+                    return false;
+                }
+                player.setVehicle(op.get());
+                return true;
             }
 
             @Override
@@ -202,11 +145,6 @@ public interface PlayerTransform {
             }
 
             @Override
-            public List<Entity> getNearbyEntities(double distance) {
-                return null;
-            }
-
-            @Override
             public double getHealth() {
                 return player.getHealthData().health().get();
             }
@@ -226,10 +164,6 @@ public interface PlayerTransform {
                 return player.getUniqueId();
             }
 
-            @Override
-            public boolean equals(Identifiable other) {
-                return false;
-            }
 
             @Override
             public void sendPluginMessage(Module source, String channel, byte[] messaeg) {
@@ -253,10 +187,6 @@ public interface PlayerTransform {
                 return getTransformer().toPhoenix(player.getLocation());
             }
 
-            @Override
-            public com.lss233.phoenix.world.World getWorld() {
-                return getTransformer().toPhoenix(player.getWorld());
-            }
         };
 
     }

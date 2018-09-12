@@ -1,4 +1,4 @@
-package com.lss233.phoenix.sponge.utils.sponge.item.inventory;
+package com.lss233.phoenix.sponge.utils.sponge.inventory;
 
 import com.lss233.phoenix.item.inventory.Inventory;
 

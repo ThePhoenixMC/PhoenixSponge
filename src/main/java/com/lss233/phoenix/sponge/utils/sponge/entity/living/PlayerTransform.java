@@ -1,5 +1,6 @@
 package com.lss233.phoenix.sponge.utils.sponge.entity.living;
 
+import com.lss233.phoenix.entity.Entity;
 import com.lss233.phoenix.entity.EntityType;
 import com.lss233.phoenix.item.inventory.CarriedInventory;
 import com.lss233.phoenix.item.inventory.Carrier;
@@ -8,6 +9,7 @@ import com.lss233.phoenix.item.inventory.ItemStack;
 import com.lss233.phoenix.item.inventory.equipment.EquipmentType;
 import com.lss233.phoenix.math.Vector;
 import com.lss233.phoenix.module.Module;
+import com.lss233.phoenix.utils.Identifiable;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.text.Text;
@@ -23,6 +25,11 @@ public interface PlayerTransform {
     default com.lss233.phoenix.entity.living.Player toPhoenix(Player player) {
         return new com.lss233.phoenix.entity.living.Player() {
             @Override
+            public boolean hasPermission(String s) {
+                return false;
+            }
+
+            @Override
             public CarriedInventory<? extends Carrier> getInventory() {
                 //TODO
                 return null;
@@ -37,6 +44,71 @@ public interface PlayerTransform {
             @Override
             public Optional<ItemStack> getEquipped(EquipmentType equipmentType) {
                 return Optional.empty();
+            }
+
+            @Override
+            public Optional<ItemStack> getBoots() {
+                return Optional.empty();
+            }
+
+            @Override
+            public Optional<ItemStack> getChestplate() {
+                return Optional.empty();
+            }
+
+            @Override
+            public Optional<ItemStack> getHelmet() {
+                return Optional.empty();
+            }
+
+            @Override
+            public Optional<ItemStack> getLeggings() {
+                return Optional.empty();
+            }
+
+            @Override
+            public Optional<ItemStack> getItemInMainHand() {
+                return Optional.empty();
+            }
+
+            @Override
+            public Optional<ItemStack> getItemInOffHand() {
+                return Optional.empty();
+            }
+
+            @Override
+            public void setBoots(@Nullable ItemStack itemStack) {
+
+            }
+
+            @Override
+            public void setChestplate(@Nullable ItemStack itemStack) {
+
+            }
+
+            @Override
+            public void setHelmet(@Nullable ItemStack itemStack) {
+
+            }
+
+            @Override
+            public void setLeggings(@Nullable ItemStack itemStack) {
+
+            }
+
+            @Override
+            public void setItemInMainHand(@Nullable ItemStack itemStack) {
+
+            }
+
+            @Override
+            public void setItemInOffHand(@Nullable ItemStack itemStack) {
+
+            }
+
+            @Override
+            public void clearEquipments() {
+
             }
 
             @Override
@@ -130,6 +202,11 @@ public interface PlayerTransform {
             }
 
             @Override
+            public List<Entity> getNearbyEntities(double distance) {
+                return null;
+            }
+
+            @Override
             public double getHealth() {
                 return player.getHealthData().health().get();
             }
@@ -147,6 +224,11 @@ public interface PlayerTransform {
             @Override
             public UUID getUniqueId() {
                 return player.getUniqueId();
+            }
+
+            @Override
+            public boolean equals(Identifiable other) {
+                return false;
             }
 
             @Override

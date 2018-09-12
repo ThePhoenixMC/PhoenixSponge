@@ -9,6 +9,11 @@ public interface CommandSourceTransform {
         return new CommandSender() {
 
             @Override
+            public boolean hasPermission(String s) {
+                return false;
+            }
+
+            @Override
             public void sendMessage(String message) {
                 src.sendMessage(Text.of(message));
             }

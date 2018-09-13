@@ -2,6 +2,7 @@
 
 A Sponge implementation of the Phoenix API.
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/4bba53b1054b4d2ea640340765336344)](https://app.codacy.com/app/PhoenixMC/PhoenixSponge?utm_source=github.com&utm_medium=referral&utm_content=ThePhoenixMC/PhoenixSponge&utm_campaign=Badge_Grade_Dashboard)
  [![TeamCity](https://img.shields.io/teamcity/http/ci.lss233.com/s/PhoenixFramework_PhoenixSponge.svg)](https://ci.lss233.com/viewType.html?buildTypeId=PhoenixFramework_PhoenixSponge&guest=1)
 [![Telegram](https://img.shields.io/badge/chat-Telegram-blue.svg)](https://t.me/PhoenixMCDev)
 [![LICENSE](https://img.shields.io/github/license/ThePhoenixMC/PhoenixSponge.svg)](LICENSE)
